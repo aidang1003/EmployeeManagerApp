@@ -12,11 +12,46 @@
         <h1>IRL Scheduler</h1>
         <hr>
         <br>
-
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="https://medcom.uiowa.edu/theloop/"><img src="static/images/iowaLogo.png" alt="link to the loop" width="100" height="50"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('index')}}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('account')}}">Account</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('availability')}}">Availability</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('schedule')}}">Schedule</a>
+                  </li>
+                </ul>
+                <form class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+          </nav>
         {% block body %}
-        <h2>Login</h2>
+
         {% endblock %}
 
     </div>
 </body>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">2020 Iowa River Landing</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="aidan-gorny@uiowa.edu">Contact the admin</a></li>
+    </ul>
+</footer>
+
+
 </html>
