@@ -7,9 +7,9 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', pageTitle='Homepage')
 
-@app.route('/aidan')
-def aidan():
-    return render_template('aidan.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
