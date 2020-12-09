@@ -3,4 +3,26 @@
 {% block title %} Employee Availability {% endblock %}
 
 
-{% block body %} Hello world! {% endblock %}
+{% block body %} 
+<h1> Manage Availability</h1>
+<br>
+<form>
+    <div class="mb-3">
+      <label for="userID" class="form-label">Your User ID</label>
+      <input type="userID" class="form-control" id="userID" value="{{ user[_id] }}" aria-describedby="emailHelp" readonly>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Day</label>
+      <input type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Time Slot</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Availability</button>
+  </form>
+
+
+
+
+{% endblock %}

@@ -1,4 +1,8 @@
 #added MWC
+#mongo credentials file
+mongoCredentials.txt
+
+
 # dotenv file
 .env
 
