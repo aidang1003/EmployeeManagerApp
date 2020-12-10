@@ -81,24 +81,62 @@ class User:
 
 
 @app.route('/')
+#@login_required
+#@roles_required('admin', 'scheduler', 'user')
 def index():
     return render_template('index.html', pageTitle='Homepage')
 
 @app.route('/login')
+#@login_required
+#@roles_required('admin', 'scheduler', 'user')
 def login():
     return render_template('login.html')
 
 @app.route('/account')
+#@login_required
+#@roles_required('admin', 'scheduler', 'user')
 def account():
     return render_template('account.html')
 
+####### Availablility #######
 @app.route('/availability')
 def availability():
     return render_template('availability.html')
-    
+
+@app.route('availability/add-availability', methods=['GET', 'POST'])
+#@login_required
+#@roles_required(user)
+def add_availability():
+    if request.method == 'POST':
+        form = request.form
+        
+        #find method to ensure user is not double scheduled
+        if availability:
+            flash("You're already scheudled for the time.", 'warning')
+            return "You're already scheudled for the time."
+        
+
+        #first_name = users.find_one({"first_name": request.form['first_name']})
+        new_availability = {
+            'userID': form['userID'],
+            'day_available': form['day_available'],
+            'time_slot': form['time_slot'],
+        }
+        recipes.insert_one(new_availability)
+        flash('availability for' + form['day_available'] + 'has been added.', 'success')
+        return redirect(url_for('availability'))
+    return render_template('availability.html', all_roles=roles.find(), all_users=users.find())
+
+
+
+######### Schedule ###########    
 @app.route('/schedule')
 def schedule():
     return render_template('schedule.html')
+
+@app.route('/schedule/tuesday')
+def schedule_tuesday():
+    return render_template('schedule-tuesday.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

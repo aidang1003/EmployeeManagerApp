@@ -6,18 +6,40 @@
 {% block body %} 
 <h1> Manage Availability</h1>
 <br>
-<form>
+<form method = "POST">
     <div class="mb-3">
-      <label for="userID" class="form-label">Your User ID</label>
-      <input type="userID" class="form-control" id="userID" value="{{ user[_id] }}" aria-describedby="emailHelp" readonly>
+      <label for="userID" class="form-label">Your user ID</label>
+      <input type="userID" class="form-control" id="userID" aria-describedby="userID" readonly>
     </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Day</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
+    <div>
+      <label for=day_available class="form-label">Day available</label> 
+      <select class="form-select" aria-label="Day select" name=day_available>
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+      </select>
     </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Time Slot</label>
+    <div>
+      <label for=time_slot class="form-label">Time slot</label> 
+      <select class="form-select" aria-label="Time slot" name=time_slot>
+        <option value="1">0700</option>
+        <option value="2">0800</option>
+        <option value="3">0900</option>
+        <option value="4">1000</option>
+        <option value="5">1100</option>
+        <option value="6">1200</option>
+        <option value="7">1300</option>
+        <option value="8">1400</option>
+        <option value="9">1500</option>
+        <option value="10">1600</option>
+        <option value="11">1700</option>
+        <option value="12">1800</option>
+        <option value="13">1900</option>
+        <option value="14">2000</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">Add Availability</button>
   </form>

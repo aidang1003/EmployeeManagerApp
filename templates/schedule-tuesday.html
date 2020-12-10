@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Schedule {% endblock %}
+{% block title %} Schedule Tuesday {% endblock %}
 
 
 {% block body %} 
@@ -8,11 +8,11 @@
 <br>
 <ul class="nav justify-content-center">
     <li class="nav-item">
-      <a class="nav-link active" href="{{ url_for('schedule')}}">Monday</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('schedule_tuesday')}}">Tuesday</a>
-    </li>
+        <a class="nav-link active" href="{{ url_for('schedule')}}">Monday</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('schedule_tuesday')}}">Tuesday</a>
+      </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Wednesday</a>
     </li>
@@ -30,7 +30,7 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">Monday</th>
+        <th scope="col">Tuesday</th>
         <th scope="col">0700</th>
         <th scope="col">0800</th>
         <th scope="col">0900</th>
