@@ -125,7 +125,7 @@ def add_availability():
         recipes.insert_one(new_availability)
         flash('availability for' + form['day_available'] + 'has been added.', 'success')
         return redirect(url_for('availability'))
-    return render_template('availability.html', all_roles=roles.find(), all_users=users.find())
+    return render_template('availability.html', all_roles=roles.find(), all_users=users.find()) #modify?
 
 
 
