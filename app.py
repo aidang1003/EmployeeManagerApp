@@ -9,7 +9,7 @@ import bcrypt
 from functools import wraps
 
 app = Flask(__name__)
-'''
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 ## necessary for python-dotenv ##
@@ -25,11 +25,48 @@ db = client['EmployeeSchedulingManager']
 
 users = db['users']
 roles = db['roles']
-recipes = db['employee_availability']
-categories = db['schedule']
+employee_availability = db['employee_availability']
 
-    
-# Python wrappers that determine role access 
+login = LoginManager()
+login.init_app(app)
+login.login_view = 'login'
+
+@login.user_loader
+def load_user(username):
+    u = users.find_one({"email": username})
+    if not u:
+        return None
+    return User(username=u['email'], role=u['role'], id=u['_id'], first_name=u["first_name"], last_name=u['last_name'])
+
+class User:
+    def __init__(self, id, username, role, first_name, last_name):
+        self._id = id
+        self.username = username
+        self.role = role
+        self.first_name = first_name
+        self.last_name = last_name
+
+    @staticmethod
+    def is_authenticated():
+        return True
+
+    @staticmethod
+    def is_active():
+        return True
+
+    @staticmethod
+    def is_anonymous():
+        return False
+
+    def get_id(self):
+        return self.username
+'''
+    @staticmethod
+    def check_password(password_hash, password):
+        return check_password_hash(password_hash, password)
+'''
+
+### custom wrap to determine role access  ### 
 def roles_required(*role_names):
     def decorator(original_route):
         @wraps(original_route)
@@ -50,51 +87,17 @@ def roles_required(*role_names):
     return decorator
 
 
-@login.user_loader
-def load_user(username):
-    u = users.find_one({"email": username})
-    if not u:
-        return None
-    return User(username=u['email'], role=u['role'], id=u['_id'])
-
-class User:
-    def __init__(self, id, username, role):
-        self._id = id
-        self.username = username
-        self.role = role
-
-    @staticmethod
-    def is_authenticated():
-        return True
-
-    @staticmethod
-    def is_active():
-        return True
-
-    @staticmethod
-    def is_anonymous():
-        return False
-
-    def get_id(self):
-        return self.username
-'''
-
-
 @app.route('/')
-#@login_required
-#@roles_required('admin', 'scheduler', 'user')
 def index():
     return render_template('index.html', pageTitle='Homepage')
 
 @app.route('/login')
-#@login_required
-#@roles_required('admin', 'scheduler', 'user')
 def login():
     return render_template('login.html')
 
 @app.route('/account')
-#@login_required
-#@roles_required('admin', 'scheduler', 'user')
+@login_required
+@roles_required('admin', 'scheduler', 'user')
 def account():
     return render_template('account.html')
 
@@ -103,9 +106,9 @@ def account():
 def availability():
     return render_template('availability.html')
 
-@app.route('availability/add-availability', methods=['GET', 'POST'])
-#@login_required
-#@roles_required(user)
+@app.route('/availability/add-availability', methods=['GET', 'POST'])
+@login_required
+@roles_required('admin', 'scheduler', 'user')
 def add_availability():
     if request.method == 'POST':
         form = request.form
