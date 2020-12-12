@@ -124,11 +124,44 @@ def logout():
     return redirect(url_for('login'))
 
 ############# Account Management ################
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 @roles_required('admin', 'scheduler', 'user')
 def account():
-    return render_template('account.html', user=users.find())
+    user = users.find_one({'_id': current_user._id})
+    return render_template('account.html', all_users=users.find(), all_roles=roles.find(), user=user)
+
+@app.route('/account/edit-user/<user_id>', methods=['GET', 'POST'])
+@login_required
+@roles_required('admin', 'scheduler', 'user')
+def edit_user(user_id):
+    user = users.find_one({'_id': ObjectId(user_id)})
+    if user:
+        return render_template('edit-user.html', user=user, all_roles=roles.find())
+    flash('User not found.', 'warning')
+    return redirect(url_for('account'))
+
+@app.route('/account/update-user/<user_id>', methods=['GET', 'POST'])
+@login_required
+@roles_required('admin', 'scheduler', 'user')
+def update_user(user_id):
+    if request.method == 'POST':
+        form = request.form
+        print('entered')
+        users.update({'_id': ObjectId(user_id)},
+            {'first_name': form['first_name'],
+            'last_name': form['last_name'],
+            'email': form['email'],
+            'password': form['password'],
+            'role': form['role'],
+            'date_added': form['date_added'],
+            'date_modified': datetime.datetime.now()})
+            
+        update_user = users.find_one({'_id': ObjectId(user_id)})
+        flash(update_user['email'] + ' has been updated.', 'success')
+        return redirect(url_for('account'))
+
+    return render_template('account.html', all_users=users.find(), all_roles=roles.find())
 
 
 

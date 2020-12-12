@@ -5,37 +5,37 @@
 
 {% block body %}
 
-<h1>View Your Account</h1><hr>
+<h1>Edit Your Account</h1><hr>
 <div padding=20px>
 {% if user %}
 
-<form>
+<form method="POST" action="{{ url_for('update_user', user_id=user['_id']) }}">
 
   <div  class="form-group"> <label for="first_name" > First Name: </label>
-      <input type="text" id="first_name" name="first_name" class="form-control" required autofocus value="{{ user['first_name'] }}" readonly></div>
+      <input type="text" id="first_name" name="first_name" class="form-control" required autofocus value="{{ user['first_name'] }}" ></div>
 
   <div  class="form-group"> <label for="last_name" > Last Name: </label>
-      <input type="text" id="last_name" name="last_name" class="form-control" required value="{{ user['last_name'] }}" readonly></div>
+      <input type="text" id="last_name" name="last_name" class="form-control" required value="{{ user['last_name'] }}" ></div>
 
   <div  class="form-group"> <label for="email" > Email: </label>
-      <input type="text" id="email" name="email" class="form-control" required value="{{ user['email'] }}" readonly></div>
+      <input type="text" id="email" name="email" class="form-control" required value="{{ user['email'] }}" ></div>
 
   <div  class="form-group"> <label for="password" > Password: </label>
-      <input type="password" id="password" name="password" class="form-control" required value="{{ user['password'] }}" readonly></div>
+      <input type="text" id="password" name="password" class="form-control" required value="{{ user['password'] }}" ></div>
 
   <div  class="form-group"> <label for="role" > Role: </label>
-      <input type="text" id="role" name="role" class="form-control" required value="{{ user['role'] }}" readonly></div>
+      <input type="text" id="role" name="role" class="form-control" required value="{{ user['role'] }}" ></div>
 
   <div  class="form-group"> <label for="date_added" > date_added: </label>
     <input type="text" id="date_added" name="date_added" class="form-control" required value="{{ user['date_added'] }}" readonly></div>
 
   <div  class="form-group"> <label for="date_modified" > date_modified: </label>
     <input type="text" id="date_modified" name="date_modified" class="form-control" required value="{{ user['date_modified'] }}" readonly></div>
-  </form>
-  
-  <form action="{{ url_for('edit_user', user_id=user['_id']) }}" method="GET">
-      <input type="submit" class="btn btn-primary" value="Edit account" />
-  </form>
+
+<div>
+    <button type="submit" class="btn btn-primary">Update account</button>
+</div>
+</form>
 
 
 
