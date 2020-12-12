@@ -32,16 +32,16 @@ login.init_app(app)
 login.login_view = 'login'
 
 @login.user_loader
-def load_user(username):
-    u = users.find_one({"email": username})
+def load_user(email):
+    u = users.find_one({"email": email})
     if not u:
         return None
-    return User(username=u['email'], role=u['role'], id=u['_id'], first_name=u["first_name"], last_name=u['last_name'])
+    return User(email=u['email'], role=u['role'], id=u['_id'], first_name=u["first_name"], last_name=u['last_name'])
 
 class User:
-    def __init__(self, id, username, role, first_name, last_name):
+    def __init__(self, id, email, role, first_name, last_name):
         self._id = id
-        self.username = username
+        self.email = email
         self.role = role
         self.first_name = first_name
         self.last_name = last_name
@@ -59,12 +59,9 @@ class User:
         return False
 
     def get_id(self):
-        return self.username
-'''
-    @staticmethod
-    def check_password(password_hash, password):
-        return check_password_hash(password_hash, password)
-'''
+        return self.email
+
+
 
 ### custom wrap to determine role access  ### 
 def roles_required(*role_names):
@@ -91,15 +88,50 @@ def roles_required(*role_names):
 def index():
     return render_template('index.html', pageTitle='Homepage')
 
-@app.route('/login')
+
+
+
+############# Login and Register ################
+@app.route('/register')
+def register():
+    return 'self register for an account'
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        user = users.find_one({"email": request.form['email']})
+        if user and user['password'] == request.form['password']:
+            user_obj = User(email=user['email'], role=user['role'], id=user['_id'], first_name=user["first_name"], last_name=user['last_name'])
+            login_user(user_obj)
+            next_page = request.args.get('next')
+
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('index')
+                return redirect(next_page)
+            flash("Logged in successfully!", category='success')
+            return redirect(request.args.get("next") or url_for("index"))
+
+        flash("Wrong email or password!", category='danger')
     return render_template('login.html')
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    flash('You have successfully logged out.', 'success')
+    return redirect(url_for('login'))
+
+############# Account Management ################
 @app.route('/account')
 @login_required
 @roles_required('admin', 'scheduler', 'user')
 def account():
     return render_template('account.html')
+
+
+
 
 ####### Availablility #######
 @app.route('/availability')
@@ -113,22 +145,28 @@ def add_availability():
     if request.method == 'POST':
         form = request.form
         
-        #find method to ensure user is not double scheduled
-        if availability:
-            flash("You're already scheudled for the time.", 'warning')
-            return "You're already scheudled for the time."
-        
+        email = employee_availability.find_one({"email": form['email']})
+        day_available = employee_availability.find_one({"day_available": form['day_available']})
+        time_slot = employee_availability.find_one({"time_slot": form['time_slot']})
 
-        #first_name = users.find_one({"first_name": request.form['first_name']})
+        if email and day_available and time_slot:
+            flash("You're already scheudled for the time.", 'warning')
+            return render_template('availability.html', all_users=users.find()) 
+
+
         new_availability = {
-            'userID': form['userID'],
+            'email': form['email'],
             'day_available': form['day_available'],
             'time_slot': form['time_slot'],
+            'date_added': datetime.datetime.now(),
+            'date_modified': datetime.datetime.now()
         }
-        recipes.insert_one(new_availability)
-        flash('availability for' + form['day_available'] + 'has been added.', 'success')
+        employee_availability.insert_one(new_availability)
+        flash('availability for ' + new_availability['day_available'] + ' has been added.', 'success')
         return redirect(url_for('availability'))
-    return render_template('availability.html', all_roles=roles.find(), all_users=users.find()) #modify?
+    return render_template('availability.html', all_users=users.find()) 
+
+
 
 
 

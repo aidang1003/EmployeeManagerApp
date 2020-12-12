@@ -6,43 +6,44 @@
 {% block body %} 
 <h1> Manage Availability</h1>
 <br>
-<form method = "POST">
-    <div class="mb-3">
-      <label for="userID" class="form-label">Your user ID</label>
-      <input type="userID" class="form-control" id="userID" aria-describedby="userID" readonly>
-    </div>
-    <div>
-      <label for=day_available class="form-label">Day available</label> 
-      <select class="form-select" aria-label="Day select" name=day_available>
-        <option value="1">Monday</option>
-        <option value="2">Tuesday</option>
-        <option value="3">Wednesday</option>
-        <option value="4">Thursday</option>
-        <option value="5">Friday</option>
-        <option value="6">Saturday</option>
-      </select>
-    </div>
-    <div>
-      <label for=time_slot class="form-label">Time slot</label> 
-      <select class="form-select" aria-label="Time slot" name=time_slot>
-        <option value="1">0700</option>
-        <option value="2">0800</option>
-        <option value="3">0900</option>
-        <option value="4">1000</option>
-        <option value="5">1100</option>
-        <option value="6">1200</option>
-        <option value="7">1300</option>
-        <option value="8">1400</option>
-        <option value="9">1500</option>
-        <option value="10">1600</option>
-        <option value="11">1700</option>
-        <option value="12">1800</option>
-        <option value="13">1900</option>
-        <option value="14">2000</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Availability</button>
-  </form>
+<form method="POST" action='/availability/add-availability'>
+  <div> <label for="email" > Email: </label>
+    <input type="text" id="email" name="email" class="form-control" value={{current_user.email}} required></div><br>
+  <div>
+    <label for=day_available class="form-label">Day available:</label> 
+    <select class="form-select" aria-label="Day select" name=day_available>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+    </select>
+  </div><br>
+  <div>
+    <label for=time_slot class="form-label">Time slot:</label> 
+    <select class="form-select" aria-label="Time slot" name=time_slot>
+      <option value="0700">0700</option>
+      <option value="0800">0800</option>
+      <option value="0090">0090</option>
+      <option value="1000">1000</option>
+      <option value="1100">1100</option>
+      <option value="1200">1200</option>
+      <option value="1300">1300</option>
+      <option value="1400">1400</option>
+      <option value="1500">1500</option>
+      <option value="1600">1600</option>
+      <option value="1700">1700</option>
+      <option value="1800">1800</option>
+      <option value="1900">1900</option>
+      <option value="2000">2000</option>
+    </select>
+  </div>
+ 
+  
+<form method="GET" action="/availability/add-availability">
+  <button type="submit" class="btn btn-primary">Add Availability</button>
+</form>
 
 
 

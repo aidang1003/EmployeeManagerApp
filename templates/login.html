@@ -3,4 +3,23 @@
 {% block title %} Login! {% endblock %}
 
 
-{% block body %} Login Page {% endblock %}
+{% block body %}
+
+<form method=POST action="{{ url_for('login') }}">
+    <p>
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email" placeholder="email" autofocus>
+    </p>
+    
+    <p>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" placeholder="Password">
+    </p>
+    <p><button type="submit" class="btn btn-primary btn-block">Log In</button></p>
+    
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a>.</p>    
+
+
+
+{% endblock %}
