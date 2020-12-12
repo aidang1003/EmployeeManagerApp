@@ -6,9 +6,10 @@
 {% block body %} 
 <h1> Manage Availability</h1>
 <br>
+<h2> Add Availability</h2><hr>
 <form method="POST" action='/availability/add-availability'>
   <div> <label for="email" > Email: </label>
-    <input type="text" id="email" name="email" class="form-control" value={{current_user.email}} required></div><br>
+    <input type="text" id="email" name="email" class="form-control" required value="{{ current_user.email }}" ></div><br>
   <div>
     <label for=day_available class="form-label">Day available:</label> 
     <select class="form-select" aria-label="Day select" name=day_available>
@@ -38,12 +39,46 @@
       <option value="1900">1900</option>
       <option value="2000">2000</option>
     </select>
-  </div>
- 
-  
+  </div><br>
+
+
 <form method="GET" action="/availability/add-availability">
   <button type="submit" class="btn btn-primary">Add Availability</button>
-</form>
+</form><br><br>
+
+<h2> Your Availability </h2><hr>
+
+{% if your_availability %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">Day</th>
+      <th scope="col">Time Slot</th>
+      <th scope="col">Time Added</th>
+      <th scope="col">Time Modified</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for row in your_availability %}
+    <tr>
+
+      <td> {{ row['email'] }}</td>
+      <td> {{ row['day_available'] }}</td>
+      <td> {{ row['time_slot'] }}</td>
+      <td> {{ row['date_added'] }}</td>
+      <td> {{ row['date_modified'] }}</td>
+      <td>
+          <form action="{{ url_for('delete_availability', employee_availability_id=row['_id']) }}" method="POST">
+              <input type="submit" class="btn btn-danger" value="Delete" />
+          </form>
+      </td>
+    </tr>
+  </tbody>
+    {% endfor %}
+{% endif %}
+  
 
 
 

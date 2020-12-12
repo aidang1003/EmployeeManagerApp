@@ -128,7 +128,8 @@ def logout():
 @login_required
 @roles_required('admin', 'scheduler', 'user')
 def account():
-    return render_template('account.html')
+    return render_template('account.html', user=users.find())
+
 
 
 
@@ -136,7 +137,7 @@ def account():
 ####### Availablility #######
 @app.route('/availability')
 def availability():
-    return render_template('availability.html')
+    return render_template('availability.html', all_users=users.find(), your_availability=employee_availability.find({'email': current_user.email}))
 
 @app.route('/availability/add-availability', methods=['GET', 'POST'])
 @login_required
@@ -164,10 +165,18 @@ def add_availability():
         employee_availability.insert_one(new_availability)
         flash('availability for ' + new_availability['day_available'] + ' has been added.', 'success')
         return redirect(url_for('availability'))
-    return render_template('availability.html', all_users=users.find()) 
+    return render_template('availability.html', all_users=users.find(), your_availability=employee_availability.find()) 
 
-
-
+@app.route('/availability/delete-availability/<employee_availability_id>', methods=['GET', 'POST'])
+@login_required
+@roles_required('admin', 'scheduler', 'user')
+def delete_availability(employee_availability_id):
+    delete_availability = employee_availability.find_one({'_id': ObjectId(employee_availability_id)})
+    if delete_availability:
+        
+        employee_availability.delete_one(delete_availability)
+        flash('availability for ' + delete_availability['day_available'] + ' has been deleted.', 'warning')
+        return redirect(url_for('availability'))
 
 
 ######### Schedule ###########    
