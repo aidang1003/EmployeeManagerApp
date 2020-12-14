@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %} welcome to the homepage {% endblock %}
+{% block title %} Login {% endblock %}
 
 
-{% block body %} Hello world! {% endblock %}
+{% block body %} 
+<br>
+<a href= "{{ url_for('login') }}">Login</a>
+
+<br>
+
+<p>
+    Don't have an account? <a href= "{{ url_for('register') }}">Sign up here.</a>
+</p>
+
+
+
+{% endblock %}

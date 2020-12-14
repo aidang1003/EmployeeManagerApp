@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %} Employee Availability {% endblock %}
+
+
+{% block body %} 
+<h1> Manage Availability</h1>
+<br>
+<h2> Add Availability</h2><hr>
+<form method="POST" action='/availability/add-availability'>
+  <div> <label for="email" > Email: </label>
+    <input type="text" id="email" name="email" class="form-control" required value="{{ current_user.email }}" ></div><br>
+  <div>
+    <label for=day_available class="form-label">Day available:</label> 
+    <select class="form-select" aria-label="Day select" name=day_available>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+    </select>
+  </div><br>
+  <div>
+    <label for=time_slot class="form-label">Time slot:</label> 
+    <select class="form-select" aria-label="Time slot" name=time_slot>
+      <option value="0700">0700</option>
+      <option value="0800">0800</option>
+      <option value="0090">0090</option>
+      <option value="1000">1000</option>
+      <option value="1100">1100</option>
+      <option value="1200">1200</option>
+      <option value="1300">1300</option>
+      <option value="1400">1400</option>
+      <option value="1500">1500</option>
+      <option value="1600">1600</option>
+      <option value="1700">1700</option>
+      <option value="1800">1800</option>
+      <option value="1900">1900</option>
+      <option value="2000">2000</option>
+    </select>
+  </div><br>
+
+
+<form method="GET" action="/availability/add-availability">
+  <button type="submit" class="btn btn-primary">Add Availability</button>
+</form><br><br>
+
+<h2> Your Availability </h2><hr>
+
+{% if your_availability %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">Day</th>
+      <th scope="col">Time Slot</th>
+      <th scope="col">Time Added</th>
+      <th scope="col">Time Modified</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for row in your_availability %}
+    <tr>
+
+      <td> {{ row['email'] }}</td>
+      <td> {{ row['day_available'] }}</td>
+      <td> {{ row['time_slot'] }}</td>
+      <td> {{ row['date_added'] }}</td>
+      <td> {{ row['date_modified'] }}</td>
+      <td>
+          <form action="{{ url_for('delete_availability', employee_availability_id=row['_id']) }}" method="POST">
+              <input type="submit" class="btn btn-danger" value="Delete" />
+          </form>
+      </td>
+    </tr>
+  </tbody>
+    {% endfor %}
+{% endif %}
+  
+
+
+
+
+{% endblock %}
