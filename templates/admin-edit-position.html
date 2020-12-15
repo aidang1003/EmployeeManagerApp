@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Register {% endblock %}
+
+
+{% block body %} 
+
+<h1>Update {{ availability['email'] }} position</h1>
+<hr>
+<div class="admin_left">
+    <br>
+    <form method="POST" action="{{ url_for('admin_update_position', employee_availability_id=availability['_id']) }}">
+
+        <div class="form-group"> <label for="email"> Email: </label>
+            <input type="text" id="email" name="email" class="form-control" required readonly
+                value="{{ availability['email'] }}"></div>
+        <div class="form-group"> <label for="day_available"> Day: </label>
+            <input type="text" id="day_available" name="day_available" class="form-control" required readonly
+                value="{{ availability['day_available'] }}"></div>
+        <div class="form-group"> <label for="time_slot"> Time Slot: </label>
+            <input type="text" id="time_slot" name="time_slot" class="form-control" required readonly
+                value="{{ availability['time_slot'] }}"></div>
+        <div>
+            <label for=position class="form-label">Position:</label> 
+            <select class="form-select" aria-label="position" name=position>
+              <option value="Phones">Phones</option>
+              <option value="Info">Info</option>
+              <option value="Front Doors">Front Doors</option>
+              <option value="Epic">Epic</option>
+            </select>
+        </div><br>
+        <div class="form-group"> <label for="date_added"> Date Added: </label>
+            <input type="text" id="date_added" name="date_added" class="form-control" required readonly
+                value="{{ availability['date_added'] }}"></div>
+        
+
+
+
+        <div>
+            <input type="submit" value="Update position" class="btn btn-secondary"></div>
+
+    </form>
+</div>
+
+{% endblock %}
