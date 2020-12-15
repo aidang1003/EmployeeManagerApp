@@ -40,6 +40,15 @@
       <option value="2000">2000</option>
     </select>
   </div><br>
+  <div>
+    <label for=position class="form-label">Position:</label> 
+    <select class="form-select" aria-label="position" name=position>
+      <option value="Phones">Phones</option>
+      <option value="Info">Info</option>
+      <option value="Front Doors">Front Doors</option>
+      <option value="Epic">Epic</option>
+    </select>
+  </div><br>
 
 
 <form method="GET" action="/availability/add-availability">
@@ -55,6 +64,7 @@
       <th scope="col">Email</th>
       <th scope="col">Day</th>
       <th scope="col">Time Slot</th>
+      <th scope="col">Position</th>
       <th scope="col">Time Added</th>
       <th scope="col">Time Modified</th>
     </tr>
@@ -67,6 +77,7 @@
       <td> {{ row['email'] }}</td>
       <td> {{ row['day_available'] }}</td>
       <td> {{ row['time_slot'] }}</td>
+      <td> {{ row['position'] }}</td>
       <td> {{ row['date_added'] }}</td>
       <td> {{ row['date_modified'] }}</td>
       <td>
