@@ -5,7 +5,12 @@
 
 {% block body %} 
 <br>
-<a href= "{{ url_for('login') }}">Login</a>
+{% if current_user.is_authenticated %}
+<a class="nav-link" href="{{ url_for('account', user_id=current_user['_id']) }}">{{ current_user.email }}</a>
+<a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+{% else %}
+<a class="nav-link" href="{{ url_for('login')}}">Login</a>
+{% endif %}
 
 <br>
 
